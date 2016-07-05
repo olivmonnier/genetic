@@ -18,7 +18,7 @@ function random_gene(genes) {
   return genes[rand(0, genes.length)];
 }
 
-function make_population(size) {
+function make_population(genes, size) {
   var population = [];
 
   for (var i = 0; i < size; i++) {
@@ -101,7 +101,7 @@ function mutate(phrase, genes, rate) {
       phrase = replaceAt(phrase, i, random_gene(genes));
     }
   }
-  
+
   return phrase;
 }
 
@@ -118,7 +118,7 @@ function solution_found(population) {
 var genes = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ';
 var population_size = 100;
 var mutation_rate = 0.01;
-var population = make_population(population_size);
+var population = make_population(genes, population_size);
 
 for (var n = 0; n < 1000; n++) {
   population = score_population(population, population_size);
