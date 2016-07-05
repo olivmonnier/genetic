@@ -101,6 +101,7 @@ function mutate(phrase, genes, rate) {
       phrase = replaceAt(phrase, i, random_gene(genes));
     }
   }
+  
   return phrase;
 }
 

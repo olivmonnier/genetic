@@ -1,3 +1,4 @@
+var composeFn = require('./utils/composeFn');
 var rand = require('./utils/rand');
 var shuffle = require('./utils/shuffle');
 var sortDblArray = require('./utils/sortDblArray');
@@ -145,8 +146,10 @@ for(var n = 0; n < 10000; n++) {
     break;
   }
 
-  var selected = selection(population);
-  shuffle(selected);
-  population = next_generation(selected);
-  population = mutation(population);
+  population = composeFn([
+    selection,
+    shuffle,
+    next_generation,
+    mutation
+  ], population);
 }
