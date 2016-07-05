@@ -1,27 +1,9 @@
+var rand = require('./utils/rand');
+var shuffle = require('./utils/shuffle');
+var sortDblArray = require('./utils/sortDblArray');
+
 var SEARCH_VALUE = 987;
 var INFINI = 999999999999;
-
-function rand(min, max) {
-  return Math.floor(Math.random() * max) + min;
-}
-
-function sortFunction(a, b) {
-  if (a[0] === b[0]) {
-    return 0;
-  } else {
-    return (a[0] < b[0]) ? -1 : 1;
-  }
-}
-
-function shuffle(a) {
-  var j, x, i;
-  for (i = a.length; i; i -= 1) {
-      j = Math.floor(Math.random() * i);
-      x = a[i - 1];
-      a[i - 1] = a[j];
-      a[j] = x;
-  }
-}
 
 function make_chromosome() {
   var value = '';
@@ -49,48 +31,20 @@ function chromosome_to_gene(chromosome) {
 
 function gene_to_operand(gene) {
   switch(gene) {
-    case "0000":
-      return 0;
-      break;
-    case "0001":
-      return 1;
-      break;
-    case "0010":
-      return 2;
-      break;
-    case "0011":
-      return 3;
-      break;
-    case "0100":
-      return 4;
-      break;
-    case "0101":
-      return 5;
-      break;
-    case "0110":
-      return 6;
-      break;
-    case "0111":
-      return 7;
-      break;
-    case "1000":
-      return 8;
-      break;
-    case "1001":
-      return 9;
-      break;
-    case "1010":
-      return "+";
-      break;
-    case "1011":
-      return "-";
-      break;
-    case "1100":
-      return "/";
-      break;
-    case "1101":
-      return "%";
-      break;
+    case "0000": return 0;
+    case "0001": return 1;
+    case "0010": return 2;
+    case "0011": return 3;
+    case "0100": return 4;
+    case "0101": return 5;
+    case "0110": return 6;
+    case "0111": return 7;
+    case "1000": return 8;
+    case "1001": return 9;
+    case "1010": return "+";
+    case "1011": return "-";
+    case "1100": return "/";
+    case "1101": return "%";
   }
 }
 
@@ -126,7 +80,7 @@ function score_population(population) {
 }
 
 function selection(population) {
-  return population.slice(0, 50);
+  return population.slice(0, 80);
 }
 
 function crossover(parent1, parent2) {
@@ -181,7 +135,7 @@ var population = make_population();
 
 for(var n = 0; n < 10000; n++) {
   population = score_population(population);
-  population = population.sort(sortFunction);
+  population = population.sort(sortDblArray);
   var best = population[0][0];
   console.log('Generation: ' + n + ' Best: ' + best);
 
