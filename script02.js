@@ -115,12 +115,12 @@ function normalize_population_score(population, size) {
  */
 function next_generation(population, size, genes, rate) {
   var mating_pool = create_mating_pool(population);
-  var pool_length = mating_pool.length;
+  var pool_length = mating_pool.length - 1;
   var newPopulation = [];
 
   for (var i = 0; i < size; i++) {
-    var parent1 = mating_pool[rand(0, pool_length - 1)];
-    var parent2 = mating_pool[rand(0, pool_length - 1)];
+    var parent1 = mating_pool[rand(0, pool_length)];
+    var parent2 = mating_pool[rand(0, pool_length)];
 
     newPopulation.push(crossover(parent1, parent2, genes, rate));
   }
@@ -158,7 +158,7 @@ function create_mating_pool(population) {
  * @return {Array}
  */
 function crossover(parent1, parent2, genes, rate) {
-  var point = rand(1, SEARCH_VALUE.length - 1);
+  var point = rand(1, SEARCH_VALUE.length);
   var child = parent2[1].slice(0, point) + parent1[1].slice(point, parent2[1].length);
 
   return [null, mutate(child, genes, rate)];
