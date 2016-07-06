@@ -6,6 +6,11 @@ var sortDblArray = require('./utils/sortDblArray');
 var SEARCH_VALUE = 987;
 var INFINI = 999999999999;
 
+/**
+ * Create a new chromosome
+ * @function make_chromosome
+ * @return {Array}
+ */
 function make_chromosome() {
   var value = '';
 
@@ -16,6 +21,11 @@ function make_chromosome() {
   return [null, value];
 }
 
+/**
+ * Generate a population
+ * @function make_population
+ * @return {Array}
+ */
 function make_population() {
   var population = [];
 
@@ -26,10 +36,22 @@ function make_population() {
   return population;
 }
 
+/**
+ * Split a chromosome by genes
+ * @function chromosome_to_gene
+ * @param {String} chromosome
+ * @return {Array}
+ */
 function chromosome_to_gene(chromosome) {
   return chromosome.match(/.{4}/g);
 }
 
+/**
+ * Get operand by gene
+ * @function gene_to_operand
+ * @param {String} gene
+ * @return {String / Integer}
+ */
 function gene_to_operand(gene) {
   switch(gene) {
     case "0000": return 0;
@@ -49,6 +71,12 @@ function gene_to_operand(gene) {
   }
 }
 
+/**
+ * Assemble genes to get a formula
+ * @function genes_to_formula
+ * @param {Array} genes
+ * @return {String}
+ */
 function genes_to_formula(genes) {
   var formula = [];
 
@@ -59,6 +87,12 @@ function genes_to_formula(genes) {
   return formula.join('');
 }
 
+/**
+ * Evaluate genes
+ * @function evaluation
+ * @param {Array} genes
+ * @return {Integer}
+ */
 function evaluation(genes) {
   var formula = genes_to_formula(genes);
   var result = null;
@@ -72,6 +106,12 @@ function evaluation(genes) {
   return (result === parseInt(result, 10)) ? result : INFINI;
 }
 
+/**
+ * Determine the score by chromosome
+ * @function score_population
+ * @param {Array} population
+ * @return {Array}
+ */
 function score_population(population) {
   return population.map(function(individual) {
     var genes = chromosome_to_gene(individual[1]);
@@ -80,10 +120,23 @@ function score_population(population) {
   });
 }
 
+/**
+ * Cut the population and keep 80 firsts
+ * @function selection
+ * @param {Array} population
+ * @return {Array}
+ */
 function selection(population) {
   return population.slice(0, 80);
 }
 
+/**
+ * Crossover two chromosomes
+ * @function crossover
+ * @param {Array} parent1
+ * @param {Array} parent2
+ * @return {Array}
+ */
 function crossover(parent1, parent2) {
   var point = rand(1, 47);
   var child1 = [null, parent1[1].slice(0, point) + parent2[1].slice(point, parent2[1].length)];
@@ -92,6 +145,12 @@ function crossover(parent1, parent2) {
   return [child1, child2];
 }
 
+/**
+ * Create a new population
+ * @function next_generation
+ * @param {Array} selection
+ * @return {Array}
+ */
 function next_generation(selection) {
   var population = [];
 
@@ -115,6 +174,12 @@ function next_generation(selection) {
   return population;
 }
 
+/**
+ * Mutate one bit into a chromosome
+ * @function mutate
+ * @param {Array} chromosome
+ * @return {Array}
+ */
 function mutate(chromosome) {
   var bit = rand(0, 48);
   var value = chromosome[chromosome.length - 1];
@@ -123,7 +188,13 @@ function mutate(chromosome) {
   return value;
 }
 
-function mutation (population) {
+/**
+ * Mutate a population
+ * @function mutation
+ * @param {Array} population
+ * @return {Array}
+ */
+function mutation(population) {
   return population.map(function(individual) {
     if (rand(0, 1000) == 0) {
       individual[1] = individual[1];

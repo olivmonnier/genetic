@@ -3,6 +3,12 @@ var replaceAt = require('./utils/replaceAt');
 
 var SEARCH_VALUE = 'Mon royaume pour un cheval';
 
+/**
+ * Create a new chromosome
+ * @function make_chromosome
+ * @param {String} genes
+ * @return {Array}
+ */
 function make_chromosome(genes) {
   var value = '';
   var length = SEARCH_VALUE.length;
@@ -14,10 +20,23 @@ function make_chromosome(genes) {
   return [null, value];
 }
 
+/**
+ * Get a random gene
+ * @function random_gene
+ * @param {String} genes
+ * @return {String}
+ */
 function random_gene(genes) {
   return genes[rand(0, genes.length)];
 }
 
+/**
+ * Generate a population
+ * @function make_population
+ * @param {String} genes
+ * @param {Integer} size
+ * @return {Array}
+ */
 function make_population(genes, size) {
   var population = [];
 
@@ -28,17 +47,36 @@ function make_population(genes, size) {
   return population;
 }
 
+/**
+ * Determine the score by chromosome
+ * @function score_population
+ * @param {Array} population
+ * @param {Integer} size
+ * @return {Array}
+ */
 function score_population(population, size) {
   population = evaluate_population(population);
   return normalize_population_score(population, size);
 }
 
+/**
+ * Evaluate each chromosome in the population
+ * @function evaluate_population
+ * @param {Array} population
+ * @return {Array}
+ */
 function evaluate_population(population) {
   return population.map(function(individual) {
     return [evaluate(individual[1]), individual[1]];
   });
 }
 
+/**
+ * Evaluate a chromosome
+ * @function evaluate
+ * @param {String} phrase
+ * @return {Integer}
+ */
 function evaluate(phrase) {
   var score = 0;
 
@@ -49,6 +87,13 @@ function evaluate(phrase) {
   return score;
 }
 
+/**
+ * Normalize in percent the score
+ * @function normalize_population_score
+ * @param {Array} population
+ * @param {Integer} size
+ * @return {Array}
+ */
 function normalize_population_score(population, size) {
   var total = population.reduce(function(sum, val) {
     return sum + val[0];
@@ -59,6 +104,15 @@ function normalize_population_score(population, size) {
   });
 }
 
+/**
+ * Create a new population
+ * @function next_generation
+ * @param {Array} population
+ * @param {Integer} size
+ * @param {String} genes
+ * @param {Integer} rate
+ * @return {Array}
+ */
 function next_generation(population, size, genes, rate) {
   var mating_pool = create_mating_pool(population);
   var pool_length = mating_pool.length;
@@ -73,6 +127,12 @@ function next_generation(population, size, genes, rate) {
   return newPopulation;
 }
 
+/**
+ * Multiplicate each chromosomes by their scores
+ * @function create_mating_pool
+ * @param {Array} population
+ * @return {Array}
+ */
 function create_mating_pool(population) {
   var mating_pool = [];
 
@@ -88,6 +148,15 @@ function create_mating_pool(population) {
   return mating_pool;
 }
 
+/**
+ * Crossover two chromosomes
+ * @function crossover
+ * @param {Array} parent1
+ * @param {Array} parent2
+ * @param {String} genes
+ * @param {Integer} rate
+ * @return {Array}
+ */
 function crossover(parent1, parent2, genes, rate) {
   var point = rand(1, SEARCH_VALUE.length - 1);
   var child = parent2[1].slice(0, point) + parent1[1].slice(point, parent2[1].length);
@@ -95,6 +164,14 @@ function crossover(parent1, parent2, genes, rate) {
   return [null, mutate(child, genes, rate)];
 }
 
+/**
+ * Mutate one character into a chromosome
+ * @function mutate
+ * @param {String} phrase
+ * @param {String} genes
+ * @param {Integer} rate
+ * @return {String}
+ */
 function mutate(phrase, genes, rate) {
   for (var i = 0; i < SEARCH_VALUE.length; i++) {
     if (rand(0, 100) / 100 < rate) {
@@ -105,6 +182,12 @@ function mutate(phrase, genes, rate) {
   return phrase;
 }
 
+/**
+ * Test if it the solution
+ * @function solution_found
+ * @param {Array} population
+ * @return {Binary}
+ */
 function solution_found(population) {
   var found = false;
 
